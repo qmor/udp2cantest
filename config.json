@@ -1,0 +1,29 @@
+{
+    "udp2can": [
+      {
+        "name": "actuator1",
+        "port": 9000,
+        "device": "mxcan0"
+      },
+      {
+        "name": "actuator2",
+        "port": 9001,
+        "device": "mxcan1"
+      }
+    ],
+    "can2udp": [
+      {
+        "name": "sensor1",
+        "device": "mxcan0",
+        "host":"192.168.3.180",
+        "port": 10000
+      },
+      {
+        "name": "sensor2",
+        "device": "mxcan1",
+        "host":"192.168.3.180",
+        "port": 100001
+
+      }
+    ]
+}
