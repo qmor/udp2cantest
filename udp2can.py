@@ -6,8 +6,6 @@ import logging
 import time
 import pickle
 
-from can import Bus
-
 
 class Udp2Can(threading.Thread):
     def __init__(self, port, device, name="Unnamed"):
@@ -21,13 +19,13 @@ class Udp2Can(threading.Thread):
         self.bus = None
 
     def run(self):
-        self.bus = Bus(self.device)
-        self.socket.bind('0.0.0.0', self.port)
+        self.bus = can.interface.Bus(self.device, bustype='socketcan')
+        self.socket.bind(('0.0.0.0', self.port))
         while not self._stop_event.is_set():
             (client_data, client_address) = self.socket.recvfrom(1024)
             logging.info("%s UDP msg from %s" % (self.name, client_address))
             msg = pickle.loads(client_data)
-            self.bus.send(msg, 0.1)
+            self.bus.send(msg=msg)
 
     def stop(self):
         self._stop_event.set()
@@ -46,11 +44,11 @@ class Can2Udp(threading.Thread):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def run(self):
-        self.bus = Bus(self.device)
+        self.bus = can.interface.Bus(self.device, bustype='socketcan')
         while not self._stop_event.is_set():
             msg = self.bus.recv(0.1)
             if msg is not None:
-                logging.info("%s recv cam msg" % self.name)
+                logging.info("%s recv cam msg\nsend to %s:%d" % (self.name, self.host, self.port))
                 msgpickle = pickle.dumps(msg)
                 self.socket.sendto(msgpickle, (self.host, self.port))
 

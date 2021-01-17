@@ -15,14 +15,14 @@
       {
         "name": "sensor1",
         "device": "mxcan0",
-        "host":"192.168.3.180",
+        "host":"127.0.0.1",
         "port": 10000
       },
       {
         "name": "sensor2",
         "device": "mxcan1",
-        "host":"192.168.3.180",
-        "port": 100001
+        "host":"127.0.0.1",
+        "port": 10001
 
       }
     ]
